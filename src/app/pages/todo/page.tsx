@@ -1,6 +1,6 @@
 'use client'
 
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {TodoItem} from "@/app/lib/models/todoItem";
 
 export default function Home() {
