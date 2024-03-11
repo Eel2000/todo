@@ -42,20 +42,23 @@ export default function Home() {
                            placeholder="enter todo-item title" className="mx-4 focus:outline-blue-500 p-2" required/>
 
                     <input type="submit" title="Save"
-                           className="self-center w-[100px] rounded-[8px] bg-blue-600 text-white font-mono p-2 content-center active:bg-red-700 shadow-2xl hover:bg-blue-950"/>
+                           className="self-center w-[100px] rounded-[8px] bg-blue-600 text-white font-mono p-2 content-center hover:bg-blue-700 active:bg-blue-600"/>
                 </form>
             </div>
             <div className="mx-4">
-                <ul>
+                <ul role="list" className="p-6 divide-y divide-slate-200">
                     {
-                        todoItems.map(i =>
-                            <li key={i.id} className="text-blue-500 font-serif m-4">
-                                <span className="mx-2 font-bold uppercase">{i.title} :</span>
-                                <span>{i.description}</span>
-                                <span className="mx-2">
-                                    <button
-                                        className="self-center w-[100px] rounded-[8px] bg-orange-500 text-white font-mono p-2 content-center active:bg-red-600 shadow-2xl hover:bg-red-950">delete</button>
-                                </span>
+                        todoItems.map(todo =>
+
+                            <li key={todo.id} className="flex justify-between py-4 first:pt-0 last:pb-0">
+                                <div className="ml-3 overflow-hidden mx-4">
+                                    <p className="text-sm font-medium text-slate-900">{todo.title}</p>
+                                    <p className="text-sm text-slate-500 truncate">{todo.description}</p>
+                                </div>
+                                <div className="flex">
+                                    <input type="checkbox"/>
+                                    <button className="bg-blue-600 rounded-xl w-[90px] mx-4 text-white hover:bg-blue-700 active:border-2 border-b-blue-600">Delete</button>
+                                </div>
                             </li>
                         )
                     }
