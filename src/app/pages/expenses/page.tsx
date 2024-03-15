@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react";
 import {Expense} from "@/app/lib/models/expense";
-import {getExpenses} from "@/app/lib/services/expenseService";
+import {getExpenses, removeExpense} from "@/app/lib/services/expenseService";
 import {useRouter} from "next/navigation";
 import {UUID} from "node:crypto";
 
@@ -50,6 +50,15 @@ export default function Page() {
         return sum
     }
 
+
+    const deleteExpense = async (id: UUID) => {
+        if(window.confirm("would you like to remove the current record???")){
+            removeExpense(id).then(res => {
+                getData().catch((error) => console.log("failed to perfom removing"))
+            }).catch((error) => console.log("fail to make it"))
+        }
+    }
+
     return (
         <div className="grid-cols-1 m-4">
             <h1 className="text-blue-500 text-2xl text-center">Welcome to the weather forecast</h1>
@@ -86,7 +95,9 @@ export default function Page() {
                                         <button className="hover:text-orange-400 hover:font-bold active:text-gray-500"
                                                 onClick={() => gotToEdit(e.id)}>Edit
                                         </button>
-                                        <button className="hover:text-red-600 hover:font-bold">remove</button>
+                                        <button className="hover:text-red-600 hover:font-bold"
+                                                onClick={() => deleteExpense(e.id)}>remove
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
