@@ -26,6 +26,11 @@ export default function NavBar(){
                             weather forecast
                         </li>
                     </Link>
+                    <Link href="/pages/expenses/" className="hover:text-white">
+                        <li>
+                            Expense management
+                        </li>
+                    </Link>
                 </ul>
             </nav>
         </div>

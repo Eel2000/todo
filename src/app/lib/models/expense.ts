@@ -4,5 +4,5 @@ export type Expense = {
     id: UUID,
     amount: number,
     reason: string,
-    Date: string
+    date: string
 }

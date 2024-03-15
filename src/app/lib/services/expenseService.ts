@@ -1,5 +1,6 @@
 import {Expense} from "@/app/lib/models/expense";
 import {UUID} from "node:crypto";
+import {NewExpense} from "@/app/lib/models/newExpense";
 
 export async function getExpenses(): Promise<Expense[]> {
     const response = await fetch("https://localhost:7108/Expense/get-expenses")
@@ -27,7 +28,7 @@ export async function removeExpense(id: UUID): Promise<any> {
     }
 }
 
-export async function addExpense(expense: Expense): Promise<boolean> {
+export async function addExpense(expense: NewExpense): Promise<boolean> {
     const response = await fetch("https://localhost:7108/Expense/Add", {
         method: 'POST',
         body: JSON.stringify(expense),
