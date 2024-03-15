@@ -1,19 +1,32 @@
 'use client'
 
-import {ChangeEvent, useState} from "react";
-import {NewExpense} from "@/app/lib/models/newExpense";
-import {addExpense} from "@/app/lib/services/expenseService";
+import {UUID} from "node:crypto";
+import {Expense} from "@/app/lib/models/expense";
+import {ChangeEvent, useEffect, useState} from "react";
+import {editExpense, getExpense} from "@/app/lib/services/expenseService";
 import {useRouter} from "next/navigation";
 
-export default function page() {
+export default function Page({params}: { params: { expenseId: UUID } }) {
     const router = useRouter()
-    
-    const exp: NewExpense = {
+
+    const exp: Expense = {
         amount: 0.0,
         reason: '',
-        Date: new Date(Date.now()),
+        date: '',
+        id: params.expenseId
     }
-    const [expense, setExpense] = useState<NewExpense>(exp)
+    const [expense, setExpense] = useState<Expense>(exp)
+
+    const getSingle = async () => {
+        getExpense(params.expenseId)
+            .then(res => {
+                setExpense(res)
+            }).catch((error) => console.log(error))
+    }
+
+    useEffect(() => {
+        getSingle().catch((error) => console.log(error))
+    }, []);
 
     const handleChanges = (event: ChangeEvent<any>) => {
         event.preventDefault()
@@ -23,24 +36,25 @@ export default function page() {
         }))
     }
 
-    const performAdd = async (expense: NewExpense) => {
-        addExpense(expense).catch((error) => console.log(error))
+    const performEdit = async (expense: Expense) => {
+        editExpense(expense).catch((error) => console.log(error))
     }
 
-    const addExpenseData = (event: ChangeEvent<HTMLFormElement>) => {
+    const editExpenseData = (event: ChangeEvent<HTMLFormElement>) => {
         event.preventDefault()
-        performAdd(expense).catch((error) => console.log(error))
+        performEdit(expense).catch((error) => console.log(error))
         setExpense(exp)
 
         router.push("/pages/expenses/")
     }
+
 
     return (
         <div className="grid-cols-1 gap-2">
             <h1 className="text-xl text-center">New Expenses</h1>
 
             <div className="">
-                <form onSubmit={addExpenseData} className="grid gap-3 justify-evenly m-4">
+                <form onSubmit={editExpenseData} className="grid gap-3 justify-evenly m-4">
                     <div className="grid grid-cols-1">
                         <label className="mx-4">amount</label>
                         <input type="number" value={expense.amount} onChange={handleChanges}

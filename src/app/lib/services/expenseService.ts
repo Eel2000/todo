@@ -28,6 +28,21 @@ export async function removeExpense(id: UUID): Promise<any> {
     }
 }
 
+export async function getExpense(id: UUID): Promise<any> {
+    const response = await fetch("https://localhost:7108/Expense/get/" + id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    if (!response.ok) {
+        console.log(response.statusText)
+    } else {
+        return response.json()
+    }
+}
+
 export async function addExpense(expense: NewExpense): Promise<boolean> {
     const response = await fetch("https://localhost:7108/Expense/Add", {
         method: 'POST',

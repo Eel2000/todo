@@ -3,8 +3,8 @@
 import {useEffect, useState} from "react";
 import {Expense} from "@/app/lib/models/expense";
 import {getExpenses} from "@/app/lib/services/expenseService";
-import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {UUID} from "node:crypto";
 
 export default function Page() {
     const router = useRouter()
@@ -16,7 +16,6 @@ export default function Page() {
             await getExpenses()
                 .then(res => {
                     setExpenses([...res])
-                    console.log(res)
                 })
         } catch (error) {
             console.log(error)
@@ -33,9 +32,22 @@ export default function Page() {
         router.push("/pages/expenses/create")
     }
 
-    const formatDatev2 = (date: string) => {
+    const gotToEdit = (id: UUID) => {
+        router.push(`/pages/expenses/edit/${id}`)
+    }
+
+    const formatDate = (date: string) => {
         let converted = new Date(date)
         return converted.toLocaleDateString()
+    }
+
+    const getExpensesSum = () => {
+        let sum = 0
+        expenses.forEach(expense => {
+            sum += expense.amount
+        })
+
+        return sum
     }
 
     return (
@@ -58,20 +70,36 @@ export default function Page() {
                         <th scope="col" className="px-6 py-3">Created At</th>
                         <th scope="col" className="px-6 py-3">Expense Amount($)</th>
                         <th scope="col" className="px-6 py-3">Summary</th>
+                        <th scope="col" className="px-6 py-3">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
                         expenses.map(e =>
                             <tr key={e.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td className="px-6 py-4">{formatDatev2(e.date)}</td>
+                                <td className="px-6 py-4">{formatDate(e.date)}</td>
                                 <td className="px-6 py-4">{e.amount}</td>
                                 <td scope="row"
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{e.reason}</td>
+                                <td className="px-6 py-4">
+                                    <div className="flex gap-2">
+                                        <button className="hover:text-orange-400 hover:font-bold active:text-gray-500"
+                                                onClick={() => gotToEdit(e.id)}>Edit
+                                        </button>
+                                        <button className="hover:text-red-600 hover:font-bold">remove</button>
+                                    </div>
+                                </td>
                             </tr>
                         )
                     }
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <td></td>
+                        <td className="px-6 py-0 font-bold">Total :<span
+                            className="text-gray-500"> {getExpensesSum()} $</span></td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
