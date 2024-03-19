@@ -2,7 +2,7 @@ import {Expense} from "@/app/lib/models/expense";
 import {UUID} from "node:crypto";
 import {NewExpense} from "@/app/lib/models/newExpense";
 
-const BASE_API_URL = "https://localhost:7108/Expense/"
+const BASE_API_URL: string = "https://localhost:7108/Expense/"
 
 export async function getExpenses(): Promise<Expense[]> {
     const response = await fetch(BASE_API_URL + "get-expenses")

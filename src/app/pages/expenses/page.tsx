@@ -53,9 +53,9 @@ export default function Page() {
 
     const deleteExpense = async (id: UUID) => {
         if(window.confirm("would you like to remove the current record???")){
-            removeExpense(id).then(res => {
-                getData().catch((error) => console.log("failed to perfom removing"))
-            }).catch((error) => console.log("fail to make it"))
+            removeExpense(id).then(() => {
+                getData().catch((error) => console.log(error))
+            }).catch((error) => console.log(error))
         }
     }
 
